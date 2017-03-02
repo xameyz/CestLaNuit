@@ -25,7 +25,7 @@ public class SwingWaypoint extends DefaultWaypoint {
 
 		button = new JButton(text.substring(0, 1));
 		button.setSize(10, 10);
-		button.setIcon();
+		// button.setIcon();
 		button.setPreferredSize(new Dimension(24, 24));
 		button.addMouseListener(new SwingWaypointMouseListener());
 		button.setVisible(true);
