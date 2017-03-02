@@ -9,7 +9,7 @@ import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
 
 class CustomPainter extends WaypointPainter {
-    public void setWaypoints(List<? extends Waypoint> waypoints) {
-        super.setWaypoints((Set<? extends JXMapViewer>) new HashSet<Waypoint>(waypoints));
-    }
+	public void setWaypoints(List<? extends Waypoint> waypoints) {
+		super.setWaypoints((Set<? extends JXMapViewer>) new HashSet<Waypoint>(waypoints));
+	}
 }
