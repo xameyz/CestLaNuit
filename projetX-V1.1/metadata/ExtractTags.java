@@ -15,11 +15,16 @@ import com.drew.metadata.iptc.*;
 import com.drew.metadata.jpeg.*;
 
 public class ExtractTags {
+	
 
     String allTags;
     String latitude;
-    File jpegFile = new File("C:\\Users\\Public\\Pictures\\Sample Pictures\\HTC Desire.jpg");
+    File jpegFile = new File("C:\\Users\\xzait\\Donnees\\image.jpg");
 
+	public static void main(String[] args) {
+		String a=File.getLatitude();
+		System.out.println(a);
+	}
     public String getTags() {
 
         try {
@@ -41,7 +46,8 @@ public class ExtractTags {
 
     public String getLatitude() {
         try {
-            Metadata metadata = ImageMetadataReader.readMetadata(jpegFile);
+        	File file = new File("Donnees/image.jpg");
+            Metadata metadata = ImageMetadataReader.readMetadata(file);
             if (metadata.containsDirectory(GpsDirectory.class)) {
                 GpsDirectory gpsDir = (GpsDirectory) metadata.getDirectory(GpsDirectory.class);
                 GpsDescriptor gpsDesc = new GpsDescriptor(gpsDir);

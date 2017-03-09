@@ -9,7 +9,7 @@ public class MetaData {
         ExtractTags extractAllTags = new ExtractTags();
 
         //extractAllTags.getTags();
-        System.out.println("\n\n\n Has this ");
+        System.out.println(" Has this ");
         extractAllTags.getLatitude();     
     }
 }
