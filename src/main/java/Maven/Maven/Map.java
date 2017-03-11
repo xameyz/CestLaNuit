@@ -11,12 +11,12 @@ import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.Waypoint;
 
-public class Carte {
+public class Map {
 	private JXMapKit map;
 	private Set<DefaultWaypoint> waypoints;
 	private CustomPainter painter;
 
-	public Carte() {
+	public Map() {
 		this.waypoints = new HashSet<DefaultWaypoint>();
 		this.waypoints.add(new DefaultWaypoint(51.50, -0.12));
 
@@ -26,8 +26,9 @@ public class Carte {
 		this.painter = new CustomPainter();
 
 		this.map.getMainMap().setOverlayPainter(painter);
-		Component mouseClick = new MyComponent(this);
-		this.map.getMainMap().addMouseListener(((MouseListener) mouseClick));
+		Component clic_on_map = new MyComponent(this);
+		this.map.getMainMap().addMouseListener(((MouseListener) clic_on_map));
+		this.paint();
 	}
 
 	public void paint() {
@@ -35,17 +36,17 @@ public class Carte {
 		this.map.getMainMap().repaint();
 	}
 
-	public JXMapKit getCarte() {
+	public JXMapKit getMap() {
 		return this.map;
 	}
 
-	public void addWaypoint(double xpx, double ypx) {
-		this.waypoints.add(new DefaultWaypoint(xpx, ypx));
+	public void addWaypoint(double coord_x, double coord_y) {
+		this.waypoints.add(new DefaultWaypoint(coord_x, coord_y));
 		this.paint();
 	}
 
-	public Collection<? extends Waypoint> getWayPoint() {
-		return waypoints;
+	public Collection<? extends DefaultWaypoint> getWayPoint() {
+		return this.waypoints;
 	}
 
 	public void addWaypoint(GeoPosition point) {

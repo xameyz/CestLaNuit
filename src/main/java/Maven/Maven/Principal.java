@@ -7,14 +7,14 @@ public class Principal {
 
 	public static void main(String[] args) {
 
-		Carte map = new Carte();
+		Map current_map = new Map();
 
 		final JFrame frame = new JFrame();
-		frame.add(map.getCarte());
+		frame.add(current_map.getMap());
 		frame.setSize(800, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				frame.setVisible(true);
