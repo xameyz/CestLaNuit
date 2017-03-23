@@ -7,5 +7,6 @@ public class ListeIm {
 
 	public ListeIm() {
 		this.list = new Hashtable<Float, Img>();
+
 	}
 }

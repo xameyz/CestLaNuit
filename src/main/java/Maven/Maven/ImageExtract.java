@@ -30,6 +30,7 @@ public class ImageExtract {
 		System.out.println("Fichier choisi : " + dialogue.getSelectedFile());
 		File f = dialogue.getSelectedFile();
 		Img monimage = new Img(f, getLatitude(f), getLongitude(f));
+
 		return monimage;
 	}
 
