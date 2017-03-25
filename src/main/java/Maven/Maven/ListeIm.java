@@ -47,8 +47,9 @@ public class ListeIm extends JPanel {
 		 * x, y, width/9, height/9, null); }
 		 */
 		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(this.image, x, y, width / 9, height / 9, this);
+		g2.drawImage(this.image, x, y, width , height, this);
 		// g.drawImage(this.image, x, y, width*9, height*9, this);
+		
 
 	}
 }
