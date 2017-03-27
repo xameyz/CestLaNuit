@@ -1,10 +1,7 @@
 package Maven.Maven;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
 

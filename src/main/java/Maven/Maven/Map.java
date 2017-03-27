@@ -9,15 +9,19 @@ import java.util.Set;
 import org.jxmapviewer.JXMapKit;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.Waypoint;
 
 public class Map {
+
 	private JXMapKit map;
 	private Set<DefaultWaypoint> waypoints;
 	private CustomPainter painter;
+	private ListeIm image_list;
 
 	public Map() {
+
+		this.image_list = new ListeIm();
 		this.waypoints = new HashSet<DefaultWaypoint>();
+
 		this.waypoints.add(new DefaultWaypoint(51.50, -0.12));
 
 		this.map = new JXMapKit();
@@ -28,7 +32,9 @@ public class Map {
 		this.map.getMainMap().setOverlayPainter(painter);
 		Component clic_on_map = new MyComponent(this);
 		this.map.getMainMap().addMouseListener(((MouseListener) clic_on_map));
-		this.paint();
+
+		this.init();
+
 	}
 
 	public void paint() {
@@ -40,17 +46,40 @@ public class Map {
 		return this.map;
 	}
 
+	public ListeIm getList_image() {
+		return this.image_list;
+	}
+
 	public void addWaypoint(double coord_x, double coord_y) {
 		this.waypoints.add(new DefaultWaypoint(coord_x, coord_y));
 		this.paint();
-	}
-
-	public Collection<? extends DefaultWaypoint> getWayPoint() {
-		return this.waypoints;
 	}
 
 	public void addWaypoint(GeoPosition point) {
 		this.waypoints.add(new DefaultWaypoint(point));
 		this.paint();
 	}
+
+	public void addImg() {
+		ImageExtract extract_method = new ImageExtract();
+		Img new_image = extract_method.LoadImage();
+		// this.image_list.list.put(key, value)
+		this.addWaypoint(new_image.Lattitude, new_image.Longitude);
+
+	}
+
+	public void init() {
+
+		for (int i = 0; i < this.image_list.list.size(); i++) {
+			this.waypoints.add(
+					new DefaultWaypoint(this.image_list.list.get(i).Lattitude, this.image_list.list.get(i).Longitude));
+		}
+		this.paint();
+
+	}
+
+	public Collection<? extends DefaultWaypoint> getWayPoint() {
+		return this.waypoints;
+	}
+
 }

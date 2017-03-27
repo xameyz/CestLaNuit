@@ -35,10 +35,11 @@ public class ImageExtract {
 
 		System.out.println("Fichier choisi : " + dialogue.getSelectedFile());
 		File f = dialogue.getSelectedFile();
-		//InputStream input = new FileInputStream("monFichierSource.txt");
-		//OutputStream output = new FileOutputStream("Donnees\\monNouveauFichier.txt");
-		//IOUtils.copy(input, output);
+		InputStream input = new FileInputStream("monFichierSource.txt");
+		OutputStream output = new FileOutputStream("Donnees\\monNouveauFichier.txt");
+		IOUtils.copy(input, output);
 		Img monimage = new Img(f, getLatitude(f), getLongitude(f));
+
 		return monimage;
 	}
 
