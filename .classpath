@@ -22,5 +22,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/xzait/Downloads/commons-io-2.5"/>
+	<classpathentry kind="lib" path="C:/Users/xzait/commons-io-2.5/commons-io-2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/xzait/commons-io-2.5/commons-io-2.5-javadoc.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

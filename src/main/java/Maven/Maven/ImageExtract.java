@@ -1,10 +1,16 @@
 package Maven.Maven;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 
 import javax.swing.JFileChooser;
+
+import org.apache.commons.io.IOUtils;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -14,7 +20,7 @@ import com.drew.metadata.exif.GpsDirectory;
 
 public class ImageExtract {
 
-	public static Img LoadImage() {
+	public static Img LoadImage() throws IOException {
 		File repertoireCourant = null;
 		try {
 			repertoireCourant = new File(".").getCanonicalFile();
@@ -29,6 +35,9 @@ public class ImageExtract {
 
 		System.out.println("Fichier choisi : " + dialogue.getSelectedFile());
 		File f = dialogue.getSelectedFile();
+		//InputStream input = new FileInputStream("monFichierSource.txt");
+		//OutputStream output = new FileOutputStream("Donnees\\monNouveauFichier.txt");
+		//IOUtils.copy(input, output);
 		Img monimage = new Img(f, getLatitude(f), getLongitude(f));
 		return monimage;
 	}
