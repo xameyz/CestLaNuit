@@ -2,6 +2,7 @@ package Maven.Maven;
 
 import java.awt.Component;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -60,9 +61,9 @@ public class Map {
 		this.paint();
 	}
 
-	public void addImg() {
-		ImageExtract extract_method = new ImageExtract();
-		Img new_image = extract_method.LoadImage();
+	public void addImg() throws IOException {
+		
+		Img new_image = ImageExtract.LoadImage();
 		// this.image_list.list.put(key, value)
 		this.addWaypoint(new_image.Lattitude, new_image.Longitude);
 

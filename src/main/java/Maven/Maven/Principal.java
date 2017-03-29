@@ -48,12 +48,15 @@ public class Principal {
 		panel_img3.setPreferredSize(new Dimension(150,250));
 		JPanel panel_img4 = new ListeIm("space.jpg");
 		panel_img4.setPreferredSize(new Dimension(150,250));
+		JPanel panel_img5 = new ListeIm("space.jpg");
+		panel_img5.setPreferredSize(new Dimension(150,250));
 		
 		panel_L.add(panel_img);
 		panel_L.add(panel_img1);
 		panel_L.add(panel_img2);
 		panel_L.add(panel_img3);
 		panel_L.add(panel_img4);
+		panel_L.add(panel_img5);
 		JScrollPane panel_scroll_l= new JScrollPane(panel_L); 		
 		panel_scroll_l.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); 
 		panel_scroll_l.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
