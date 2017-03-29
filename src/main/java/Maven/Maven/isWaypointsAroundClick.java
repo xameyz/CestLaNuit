@@ -61,7 +61,7 @@ public class isWaypointsAroundClick {
 
 		// pour chaque waypoint apparaissant sur la carte, on va voir si l'un
 		// deux est situé dans le polygone
-		for (DefaultWaypoint currentWaypoint : _map.getWayPoint()) {
+		for (DefaultWaypoint currentWaypoint : _map.getSetWaypoints()) {
 			Geometry waypoint_to_test = geomFactory.createPoint(new Coordinate(
 					currentWaypoint.getPosition().getLongitude(), currentWaypoint.getPosition().getLatitude()));
 			// System.out.println(polygon.contains(waypoint_to_test));

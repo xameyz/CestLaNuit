@@ -38,17 +38,17 @@ public class Principal {
 		panel_L.setBackground(Color.lightGray);
 		panel_L.setPreferredSize(new Dimension(200, 300));
 		
-		JPanel panel_img = new ListeIm("space.jpg");
+		JPanel panel_img = new ImgManager("space.jpg");
 		panel_img.setPreferredSize(new Dimension(150,250));
-		JPanel panel_img1 = new ListeIm("space.jpg");
+		JPanel panel_img1 = new ImgManager("space.jpg");
 		panel_img1.setPreferredSize(new Dimension(150,250));
-		JPanel panel_img2 = new ListeIm("space.jpg");
+		JPanel panel_img2 = new ImgManager("space.jpg");
 		panel_img2.setPreferredSize(new Dimension(150,250));
-		JPanel panel_img3 = new ListeIm("space.jpg");
+		JPanel panel_img3 = new ImgManager("space.jpg");
 		panel_img3.setPreferredSize(new Dimension(150,250));
-		JPanel panel_img4 = new ListeIm("space.jpg");
+		JPanel panel_img4 = new ImgManager("space.jpg");
 		panel_img4.setPreferredSize(new Dimension(150,250));
-		JPanel panel_img5 = new ListeIm("space.jpg");
+		JPanel panel_img5 = new ImgManager("space.jpg");
 		panel_img5.setPreferredSize(new Dimension(150,250));
 		
 		panel_L.add(panel_img);
@@ -68,7 +68,7 @@ public class Principal {
 		
 		panel_R.setBackground(Color.lightGray);
 		panel_R.setPreferredSize(new Dimension(200, 300));
-		JPanel panel_img_s = new ListeIm("space.jpg");
+		JPanel panel_img_s = new ImgManager("space.jpg");
 		panel_img_s.setPreferredSize(new Dimension(150,250));
 		panel_R.add(panel_img_s);
 		panel_R.add(panel_img);
