@@ -1,9 +1,8 @@
 package Maven.Maven;
 
 import java.awt.Point;
-import java.util.HashSet;
+import java.util.ArrayList;
 
-import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -13,13 +12,10 @@ import com.vividsolutions.jts.geom.LinearRing;
 
 public class isWaypointsAroundClick {
 
-	private HashSet<DefaultWaypoint> result_list = new HashSet<DefaultWaypoint>();
+	public static void check(Map _map, Point _mousePosition, ArrayList<CustomDefaultWaypoint> clickWaypointResults) {
 
-	public isWaypointsAroundClick() {
-
-	}
-
-	public HashSet<DefaultWaypoint> isWaypointsAroundClick(Map _map, Point _mousePosition) {
+		// on efface les éléments de la liste des résultats pour la rafraichir
+		clickWaypointResults.clear();
 
 		// création d'un polygone à 4 côtés (rectangle)
 
@@ -60,17 +56,18 @@ public class isWaypointsAroundClick {
 		Geometry polygon = geomFactory.createPolygon(polygonBoundary);
 
 		// pour chaque waypoint apparaissant sur la carte, on va voir si l'un
-		// deux est situé dans le polygone
-		for (DefaultWaypoint currentWaypoint : _map.getSetWaypoints()) {
+		// d'eux est situé dans le polygone
+		for (CustomDefaultWaypoint currentWaypoint : _map.getSetWaypoints()) {
 			Geometry waypoint_to_test = geomFactory.createPoint(new Coordinate(
 					currentWaypoint.getPosition().getLongitude(), currentWaypoint.getPosition().getLatitude()));
-			// System.out.println(polygon.contains(waypoint_to_test));
+
+			// on ajoute chaque waypoint qui se trouve autour du clic dans la
+			// liste clickWaypointsResults passée en paramètres
 			if (polygon.contains(waypoint_to_test)) {
-				result_list.add(currentWaypoint);
+				clickWaypointResults.add(currentWaypoint);
 			}
 
 		}
-		return result_list;
 
 	}
 

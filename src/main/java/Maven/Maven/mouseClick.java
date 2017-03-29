@@ -3,33 +3,42 @@ package Maven.Maven;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
-
-import org.jxmapviewer.viewer.DefaultWaypoint;
 
 class MyComponent extends JComponent implements MouseListener {
 
 	/** generated. */
 	private static final long serialVersionUID = 6845230025649741885L;
 	private Map current_map;
+	public ArrayList<CustomDefaultWaypoint> clickWaypointResults;
 
-	public MyComponent(Map _map) {
+	public MyComponent(Map _map, ArrayList<CustomDefaultWaypoint> _clickWaypointResults) { // instanciation
+																							// de
+																							// mouseClick
 		this.current_map = _map;
+		this.clickWaypointResults = _clickWaypointResults;
 	}
 
 	public void mouseClicked(MouseEvent clic) {
 
-		Point mousePosition_Point = current_map.getMap().getMousePosition();
+		// on récupère les coordonnées de là où on 
+		//clic sur la map
+		Point mousePosition_Point = current_map.getMap().getMousePosition(); 
+		
+																				
+		// appel de la méthode check de la classe 
+		// regarder s'il y a des waypoints à côté du clic
+		// et mettre à jour la liste clickWaypointsResults
+		isWaypointsAroundClick.check(this.current_map, mousePosition_Point, this.clickWaypointResults);
 
-		isWaypointsAroundClick method = new isWaypointsAroundClick();
-		HashSet<DefaultWaypoint> result_list = method.isWaypointsAroundClick(this.current_map, mousePosition_Point);
-		if (!result_list.isEmpty()) {
-
+		if (!clickWaypointResults.isEmpty()) {
 			System.out.println("Un waypoint a été trouvé à proximité");
+
 		} else {
 			System.out.println("Aucun waypoint à proximité");
+
 		}
 
 	}
