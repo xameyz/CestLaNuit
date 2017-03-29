@@ -2,6 +2,7 @@ package Maven.Maven;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,7 +11,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 public class ImgManager extends JPanel {
-	public Hashtable<Integer, Img> imgHashtable;
+	public ArrayList<Img> imgList;
 
 	public static void main(String[] args) {
 		File f = new File("Donnees\\image.png");
@@ -18,7 +19,7 @@ public class ImgManager extends JPanel {
 	}
 
 	public ImgManager() {
-		this.imgHashtable = new Hashtable<Integer, Img>();
+		this.imgList = new ArrayList<Img>();
 		File dossier;
 		try {
 			dossier = new File("Donnees").getCanonicalFile();
@@ -30,8 +31,8 @@ public class ImgManager extends JPanel {
 					float lon = ImageExtract.getLatitude(f);
 					float lat = ImageExtract.getLongitude(f);
 					Img im = new Img(f, lon, lat);
-					int code = im.hashCode();
-					this.imgHashtable.put(code, im);
+					
+					this.imgList.add(im);
 				}
 			}
 		} catch (IOException e) {

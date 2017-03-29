@@ -3,6 +3,7 @@ package Maven.Maven;
 import java.awt.Component;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -23,8 +24,9 @@ public class Map {
 
 		this.imgManager = new ImgManager();
 		this.set_waypoints = new HashSet<CustomDefaultWaypoint>();
-
-		this.set_waypoints.add(new CustomDefaultWaypoint(51.50, -0.12));
+		
+		this.set_waypoints.add(new CustomDefaultWaypoint(51.50, -0.12, 1));
+		this.centerImg(new GeoPosition(43.93, 2.15));
 
 		this.map = new JXMapKit();
 		this.map.setDefaultProvider(JXMapKit.DefaultProviders.OpenStreetMaps);
@@ -48,41 +50,56 @@ public class Map {
 		return this.map;
 	}
 
-	public Hashtable<Integer, Img> getListBddImage() {
-		return this.imgManager.imgHashtable;
-	}
-	
 	public ImgManager getImgManager() {
 		return this.imgManager;
 	}
+	
+	public ArrayList<Img> getImgList() {
+		return this.imgManager.imgList;
+	}
+	
 
-	public void addWaypoint(double coord_x, double coord_y) {
-		this.set_waypoints.add(new CustomDefaultWaypoint(coord_x, coord_y));
+	public void addWaypoint(double coord_x, double coord_y, int key) {
+		this.set_waypoints.add(new CustomDefaultWaypoint(coord_x, coord_y, key));
 		this.paint();
 	}
 
-	public void addWaypoint(GeoPosition point) {
-		this.set_waypoints.add(new CustomDefaultWaypoint(point));
+	public void addWaypoint(GeoPosition point, int key) {
+		this.set_waypoints.add(new CustomDefaultWaypoint(point, key));
 		this.paint();
 	}
 
 	public void addImg() throws IOException {
 		
 		Img new_image = ImageExtract.LoadImage();
-		// this.image_list.list.put(key, value)
-		this.addWaypoint(new_image.Lattitude, new_image.Longitude);
+		this.imgManager.imgList.add(new_image);
+		this.addWaypoint(new_image.Lattitude, new_image.Longitude, this.imgManager.imgList.size()-1);
 
 	}
-
+	
+	public void centerImg(GeoPosition pos) {
+		this.map.setCenterPosition(pos);
+		this.paint();
+	}
+	
 	public void init() {
 		
-		if (!this.imgManager.imgHashtable.isEmpty()) {
-			for (int i = 0; i < this.imgManager.imgHashtable.size(); i++) {
-				this.set_waypoints.add(
-					new CustomDefaultWaypoint(this.imgManager.imgHashtable.get(i).Lattitude, this.imgManager.imgHashtable.get(i).Longitude));
-			}
+		if (!this.imgManager.imgList.isEmpty()) {
 			
+			for (int i=0; i<this.imgManager.imgList.size();i++) {
+				this.set_waypoints.add(
+						new CustomDefaultWaypoint(this.imgManager.imgList.get(i).Lattitude, this.imgManager.imgList.get(i).Longitude, i)
+						);
+			}
 		}
+//		if (!this.imgManager.imgHashtable.isEmpty()) {
+//			for (int i = 0; i < this.imgManager.imgHashtable.size(); i++) {
+//				this.set_waypoints.add(
+		
+//					new CustomDefaultWaypoint(this.imgManager.imgHashtable.get(i).Lattitude, this.imgManager.imgHashtable.get(i).Longitude));
+//			}
+//			
+//		}
 		this.paint();
 		
 		

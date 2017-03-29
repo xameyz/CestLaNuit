@@ -10,13 +10,15 @@ public class CustomDefaultWaypoint extends DefaultWaypoint {
 	private GeoPosition position;
 
 	
-	public CustomDefaultWaypoint(double latitude, double longitude)
+	public CustomDefaultWaypoint(double latitude, double longitude, int _key)
 	{
 		super(latitude, longitude);
+		this.key=_key;
 		
 	}
 
-	public CustomDefaultWaypoint(GeoPosition coord) {
+	public CustomDefaultWaypoint(GeoPosition coord, int _key) {
 		super(coord);
+		this.key=_key;
 	}
 }
