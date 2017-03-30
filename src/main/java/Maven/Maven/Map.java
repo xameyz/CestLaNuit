@@ -22,8 +22,8 @@ public class Map {
 	private CustomPainter painter;
 	private ImgManager imgManager; // ImgManager qui contient la liste des Img
 	private Component clickOnMap;
-	private ArrayList<CustomDefaultWaypoint> clickWaypointResults; // Liste qui
-																	// contient
+	private ArrayList<CustomDefaultWaypoint> clickWaypointResults; 
+	// Liste qui contient
 																	// les
 																	// résultats
 																	// (CustomDefaultWaypoint
@@ -44,7 +44,10 @@ public class Map {
 
 		this.map = new JXMapKit();
 		this.map.setDefaultProvider(JXMapKit.DefaultProviders.OpenStreetMaps);
-
+		
+		Component clic_on_map = new MyComponent(this, this.clickWaypointResults);		
+		this.map.getMainMap().addMouseListener(((MouseListener) clic_on_map));
+		
 		this.painter = new CustomPainter();
 		this.map.getMainMap().setOverlayPainter(painter);
 
