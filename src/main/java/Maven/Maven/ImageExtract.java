@@ -40,36 +40,30 @@ public class ImageExtract {
 		System.out.println("Fichier choisi : " + dialogue.getSelectedFile());
 		File f = dialogue.getSelectedFile();
 		String name = f.getName();
-
-		boolean drp = false;// Ce drapeau est a faux si il n'y a pas de meta
-							// data dans le file
 		Img monimage = null;
 		try {
 			monimage = new Img(f, getLatitude(f), getLongitude(f));
 		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
-			drp = true;
-			System.out.println("Attention l'image ne semble pas avoir de coordonees GPS atachees");
 			monimage = new Img(f, 0, 0);
 		}
-		if (drp == false) {
-			InputStream input = new FileInputStream(f);
-			File dossier;
-			try {//Si l'image existe deja dans le dossier
-				dossier = new File("Donnees").getCanonicalFile();
-				String[] liste = dossier.list();
-				int i=0;
-				while (i < liste.length) {
-					if(liste[i].equals(name)){
-						name = name.concat("(copie)");
-					}
-					i++;
+		InputStream input = new FileInputStream(f);
+		File dossier;
+		try {//Si l'image existe deja dans le dossier
+			dossier = new File("Donnees").getCanonicalFile();
+			String[] liste = dossier.list();
+			int i=0;
+			while (i < liste.length) {
+				if(liste[i].equals(name)){
+					String[] prefixe = name.split("\\.");
+					name = prefixe[0].concat("(copie)").concat(".").concat(prefixe[1]);
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
+				i++;
 			}
-			OutputStream output = new FileOutputStream(new File(ImgManager.DIR_DATA_FILE, name));
-			IOUtils.copy(input, output);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		OutputStream output = new FileOutputStream(new File(ImgManager.DIR_DATA_FILE, name));
+		IOUtils.copy(input, output);
 		return monimage;
 	}
 
@@ -117,7 +111,7 @@ public class ImageExtract {
 		} catch (ImageProcessingException e) {
 			System.out.println("erreur 1");
 		} catch (IOException e) {
-			System.out.println("erreur 2");
+			System.out.println("Attention l'image ne semble pas avoir de coordonees GPS atachees");
 		} catch (java.lang.ClassCastException e) {
 			System.out.println("erreur 3");
 		}
