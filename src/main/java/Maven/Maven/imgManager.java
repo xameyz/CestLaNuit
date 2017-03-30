@@ -2,23 +2,27 @@ package Maven.Maven;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
 import javax.swing.JPanel;
 
-public class ListeIm extends JPanel {
-	public Hashtable<Integer, Img> list;
+public class ImgManager extends JPanel {
+	public static final String DIR_DATA_NAME = "Donnees";
+	
+	public static final File DIR_DATA_FILE = new File(DIR_DATA_NAME);
+	
+	public ArrayList<Img> imgList;
 
 	public static void main(String[] args) {
-		File f = new File("Donnees\\image.png");
+		File f = new File(DIR_DATA_FILE, "image.png");
 		System.out.println(f.getAbsolutePath());
 	}
 
-	public ListeIm() {
-		this.list = new Hashtable<Integer, Img>();
+	public ImgManager() {
+		this.imgList = new ArrayList<Img>();
 		File dossier;
 		try {
 			dossier = new File("Donnees").getCanonicalFile();
@@ -26,12 +30,11 @@ public class ListeIm extends JPanel {
 			for (int i = 0; i < liste.length; i++) {
 				if (liste[i].endsWith(".jpg") || liste[i].endsWith(".gif") || liste[i].endsWith(".png")
 						|| liste[i].endsWith(".bnp") || liste[i].endsWith(".tif")) {
-					File f = new File("Donnees\\" + liste[i]).getCanonicalFile();
+					File f = new File(DIR_DATA_FILE, liste[i]).getCanonicalFile();
 					float lon = ImageExtract.getLatitude(f);
 					float lat = ImageExtract.getLongitude(f);
 					Img im = new Img(f, lon, lat);
-					int code = im.hashCode();
-					this.list.put(code, im);
+					this.imgList.add(im);
 				}
 			}
 		} catch (IOException e) {
@@ -39,13 +42,13 @@ public class ListeIm extends JPanel {
 		}
 	}
 
-	public ListeIm(Image image) {
+	public ImgManager(Image image) {
 		// à modifier pour la hashtable car juste pour un test avec une image
 		//this.image = image;
 
 	}
 
-	public ListeIm(String file) {
+	public ImgManager(String file) {
 		// à modifier pour la hashtable car juste pour un test avec une image
 		//this.image = getToolkit().getImage(file);
 	}

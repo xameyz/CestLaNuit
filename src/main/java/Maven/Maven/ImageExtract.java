@@ -20,11 +20,15 @@ import com.drew.metadata.exif.GpsDirectory;
 
 public class ImageExtract {
 
+	public static void main(String[] args) throws IOException {
+		Img bonsoir = LoadImage();
+	}
+
 	public static Img LoadImage() throws IOException {
 		File repertoireCourant = null;
 		try {
 			repertoireCourant = new File(".").getCanonicalFile();
-			System.out.println("Répertoire courant : " + repertoireCourant);
+			System.out.println("Repertoire courant : " + repertoireCourant);
 		} catch (IOException e) {
 			System.out.print("Erreur");
 		}
@@ -35,11 +39,37 @@ public class ImageExtract {
 
 		System.out.println("Fichier choisi : " + dialogue.getSelectedFile());
 		File f = dialogue.getSelectedFile();
-		InputStream input = new FileInputStream("monFichierSource.txt");
-		OutputStream output = new FileOutputStream("Donnees\\monNouveauFichier.txt");
-		IOUtils.copy(input, output);
-		Img monimage = new Img(f, getLatitude(f), getLongitude(f));
+		String name = f.getName();
 
+		boolean drp = false;// Ce drapeau est a faux si il n'y a pas de meta
+							// data dans le file
+		Img monimage = null;
+		try {
+			monimage = new Img(f, getLatitude(f), getLongitude(f));
+		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
+			drp = true;
+			System.out.println("Attention l'image ne semble pas avoir de coordonees GPS atachees");
+			monimage = new Img(f, 0, 0);
+		}
+		if (drp == false) {
+			InputStream input = new FileInputStream(f);
+			File dossier;
+			try {//Si l'image existe deja dans le dossier
+				dossier = new File("Donnees").getCanonicalFile();
+				String[] liste = dossier.list();
+				int i=0;
+				while (i < liste.length) {
+					if(liste[i].equals(name)){
+						name = name.concat("(copie)");
+					}
+					i++;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			OutputStream output = new FileOutputStream(new File(ImgManager.DIR_DATA_FILE, name));
+			IOUtils.copy(input, output);
+		}
 		return monimage;
 	}
 
@@ -62,7 +92,7 @@ public class ImageExtract {
 			System.out.println("erreur 3");
 		}
 		// convertion dms to dd:
-		String[] tab0 = latitude.split("°");
+		String[] tab0 = latitude.split("Â°");
 		tab0[1] = tab0[1].substring(1, tab0[1].length());
 		String[] tab1 = tab0[1].split("'");
 		tab1[1] = tab1[1].substring(1, tab1[1].length() - 1);
@@ -92,7 +122,7 @@ public class ImageExtract {
 			System.out.println("erreur 3");
 		}
 		// convertion dms to dd:
-		String[] tab0 = longitude.split("°");
+		String[] tab0 = longitude.split("Â°");
 		tab0[1] = tab0[1].substring(1, tab0[1].length());
 		String[] tab1 = tab0[1].split("'");
 		tab1[1] = tab1[1].substring(1, tab1[1].length() - 1);

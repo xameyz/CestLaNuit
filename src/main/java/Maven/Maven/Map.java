@@ -2,6 +2,7 @@ package Maven.Maven;
 
 import java.awt.Component;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,11 +16,11 @@ public class Map {
 	private JXMapKit map;
 	private Set<DefaultWaypoint> waypoints;
 	private CustomPainter painter;
-	private ListeIm image_list;
+	private ImgManager image_list;
 
 	public Map() {
 
-		this.image_list = new ListeIm();
+		this.image_list = new ImgManager();
 		this.waypoints = new HashSet<DefaultWaypoint>();
 
 		this.waypoints.add(new DefaultWaypoint(51.50, -0.12));
@@ -33,8 +34,6 @@ public class Map {
 		Component clic_on_map = new MyComponent(this);
 		this.map.getMainMap().addMouseListener(((MouseListener) clic_on_map));
 
-		this.init();
-
 	}
 
 	public void paint() {
@@ -46,7 +45,7 @@ public class Map {
 		return this.map;
 	}
 
-	public ListeIm getList_image() {
+	public ImgManager getList_image() {
 		return this.image_list;
 	}
 
@@ -60,21 +59,11 @@ public class Map {
 		this.paint();
 	}
 
-	public void addImg() {
-		ImageExtract extract_method = new ImageExtract();
-		Img new_image = extract_method.LoadImage();
+	public void addImg() throws IOException {
+		
+		Img new_image = ImageExtract.LoadImage();
 		// this.image_list.list.put(key, value)
 		this.addWaypoint(new_image.Lattitude, new_image.Longitude);
-
-	}
-
-	public void init() {
-
-		for (int i = 0; i < this.image_list.list.size(); i++) {
-			this.waypoints.add(
-					new DefaultWaypoint(this.image_list.list.get(i).Lattitude, this.image_list.list.get(i).Longitude));
-		}
-		this.paint();
 
 	}
 
