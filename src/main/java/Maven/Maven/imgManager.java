@@ -16,6 +16,7 @@ public class ImgManager extends JPanel {
 	
 	public ArrayList<Img> imgList;
 
+
 	public ImgManager() {
 		this.imgList = new ArrayList<Img>();
 		File dossier;
@@ -25,7 +26,7 @@ public class ImgManager extends JPanel {
 			for (int i = 0; i < liste.length; i++) {
 				if (liste[i].endsWith(".jpg") || liste[i].endsWith(".gif") || liste[i].endsWith(".png")
 						|| liste[i].endsWith(".bnp") || liste[i].endsWith(".tif")) {
-					File f = new File(DIR_DATA_FILE, liste[i]).getCanonicalFile();
+					File f = new File(DIR_DATA_FILE,liste[i]).getCanonicalFile();
 					float lon = ImageExtract.getLatitude(f);
 					float lat = ImageExtract.getLongitude(f);
 					Img im = new Img(f, lon, lat);
