@@ -9,7 +9,7 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-public class ImgManager extends JPanel {
+public class ImgManager  {
 	public static final String DIR_DATA_NAME = "Donnees";
 	
 	public static final File DIR_DATA_FILE = new File(DIR_DATA_NAME);
