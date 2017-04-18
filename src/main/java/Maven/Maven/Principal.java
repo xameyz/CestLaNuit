@@ -43,6 +43,7 @@ public class Principal extends JFrame implements ActionListener {
 		panel_Down.add(buttonExit);
 		panel_Down.add(buttonAdd);
 		buttonAdd.addActionListener(this);
+		buttonExit.addActionListener(this);
 
 		// panel de gauche
 		panel_L.setLayout(new FlowLayout());
@@ -82,6 +83,10 @@ public class Principal extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 
+		}
+		if (source == buttonExit){
+			this.setVisible(false);
+			dispose();
 		}
 	}
 
