@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>logServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebServ6</a> &gt; <a href="index.source.html" class="el_package">servlet</a> &gt; <span class="el_source">logServlet.java</span></div><h1>logServlet.java</h1><pre class="source lang-java linenums">package servlet;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.DAO;
+import model.DAOException;
+import model.DataSourceFactory;
+
+<span class="nc" id="L16">public class logServlet extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws model.DAOException
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, DAOException {
+        // On récupère le paramètre action : se logger ou se deconnecter ?
+<span class="nc" id="L31">        String action = request.getParameter(&quot;action&quot;);</span>
+        //s'il n'est pas nul
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (null != action) {</span>
+<span class="nc bnc" id="L34" title="All 10 branches missed.">            switch (action) {</span>
+                case &quot;login&quot;:
+<span class="nc" id="L36">                    checkLogin(request);</span>
+<span class="nc" id="L37">                    break;</span>
+                case &quot;logout&quot;:
+<span class="nc" id="L39">                    doLogout(request);</span>
+                    break;
+            }
+        }
+        //on récupère l'userName
+<span class="nc" id="L44">        String userName = findUserInSession(request);</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (null == userName) { // L'utilisateur n'est pas connecté</span>
+            // On choisit la page de login
+<span class="nc" id="L47">            request.getRequestDispatcher(&quot;logPage.jsp&quot;).forward(request, response);</span>
+            //sinon, si c'est un admin
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        } else if (userName.equals(&quot;admin&quot;)) {</span>
+            //on choisit la page d'administration
+<span class="nc" id="L51">            request.getRequestDispatcher(&quot;/protectedAdmin/adminPage.html&quot;).forward(request, response);</span>
+        } else {
+            //sinon, on le redirige vers la servlet customerServlet
+<span class="nc" id="L54">            response.sendRedirect(&quot;customerServlet&quot;);</span>
+        }
+
+<span class="nc" id="L57">    }</span>
+
+    private void checkLogin(HttpServletRequest request) throws DAOException {
+<span class="nc" id="L60">        DAO dao = new DAO(DataSourceFactory.getDataSource());</span>
+
+        // Les paramètres transmis dans la requête
+<span class="nc" id="L63">        String loginParam = request.getParameter(&quot;loginParam&quot;);</span>
+<span class="nc" id="L64">        String passwordParam = request.getParameter(&quot;passwordParam&quot;);</span>
+
+        //Le login/password défini dans web.xml
+<span class="nc" id="L67">        String login = getInitParameter(&quot;login&quot;);</span>
+<span class="nc" id="L68">        String password = getInitParameter(&quot;password&quot;);</span>
+<span class="nc" id="L69">        String userName = getInitParameter(&quot;userName&quot;);</span>
+
+        //est-ce l'admin ?
+<span class="nc bnc" id="L72" title="All 4 branches missed.">        if ((login.equals(loginParam) &amp;&amp; (password.equals(passwordParam)))) {</span>
+            // On a trouvé la combinaison login / password
+            // On stocke l'information dans la session
+<span class="nc" id="L75">            HttpSession session = request.getSession(true); // démarre la session</span>
+<span class="nc" id="L76">            session.setAttribute(&quot;userName&quot;, userName);</span>
+            //sinon, est-ce un client valide ?
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        } else if (dao.doesCustomerExists(loginParam, Integer.parseInt(passwordParam))) {</span>
+<span class="nc" id="L79">            HttpSession session = request.getSession(true); // démarre la session</span>
+<span class="nc" id="L80">            session.setAttribute(&quot;userName&quot;, passwordParam);</span>
+            //sinon
+<span class="nc" id="L82">        } else { // On positionne un message d'erreur pour l'afficher dans la JSP</span>
+<span class="nc" id="L83">            request.setAttribute(&quot;errorMessage&quot;, &quot;Login/Password incorrect&quot;);</span>
+        }
+<span class="nc" id="L85">    }</span>
+
+    //si la session existe, on récupère l'userName associé, sinon on renvoie null
+    private String findUserInSession(HttpServletRequest request) {
+<span class="nc" id="L89">        HttpSession session = request.getSession(false);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        return (session == null) ? null : (String) session.getAttribute(&quot;userName&quot;);</span>
+    }
+
+    private void doLogout(HttpServletRequest request) {
+        // On termine la session
+<span class="nc" id="L95">        HttpSession session = request.getSession(false);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (session != null) {</span>
+<span class="nc" id="L97">            session.invalidate();</span>
+        }
+
+<span class="nc" id="L100">    }</span>
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+<span class="nc" id="L115">            processRequest(request, response);</span>
+<span class="nc" id="L116">        } catch (DAOException ex) {</span>
+<span class="nc" id="L117">            Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L118">        }</span>
+<span class="nc" id="L119">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+<span class="nc" id="L133">            processRequest(request, response);</span>
+<span class="nc" id="L134">        } catch (DAOException ex) {</span>
+<span class="nc" id="L135">            Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L136">        }</span>
+<span class="nc" id="L137">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="nc" id="L146">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

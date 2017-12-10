@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>updateOrderServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebServ6</a> &gt; <a href="index.source.html" class="el_package">servlet</a> &gt; <span class="el_source">updateOrderServlet.java</span></div><h1>updateOrderServlet.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.DAO;
+import model.DAOException;
+import model.DataSourceFactory;
+
+<span class="nc" id="L22">public class updateOrderServlet extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            //on instancie un DAO avec la base de données
+<span class="nc" id="L37">            DAO dao = new DAO(DataSourceFactory.getDataSource());</span>
+            //on récupère tous les paramètres nécessaire à l'exécution de la requête
+<span class="nc" id="L39">            String action = request.getParameter(&quot;action&quot;);</span>
+<span class="nc" id="L40">            String product_id = request.getParameter(&quot;product_id&quot;);</span>
+<span class="nc" id="L41">            String quantity = request.getParameter(&quot;quantity&quot;);</span>
+            //si la session est active, on récupère l'userName
+<span class="nc" id="L43">            HttpSession session = request.getSession(false);</span>
+<span class="nc" id="L44">            String customer_id = (String) session.getAttribute(&quot;userName&quot;);</span>
+
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (action == null) {</span>
+                //si l'action est nulle, c'est qu'on arrive pour la premiere fois sur la page
+                //on récupère les paramètres nécessaires, on les réajoute à la requête et on rappelle la même page
+<span class="nc" id="L49">                String order_id = request.getParameter(&quot;order_id&quot;);</span>
+<span class="nc" id="L50">                String description = request.getParameter(&quot;description&quot;);</span>
+<span class="nc" id="L51">                String purchase_cost = request.getParameter(&quot;purchase_cost&quot;);</span>
+<span class="nc" id="L52">                String total_cost = request.getParameter(&quot;total_cost&quot;);</span>
+<span class="nc" id="L53">                request.setAttribute(&quot;customer_id&quot;, customer_id);</span>
+<span class="nc" id="L54">                request.setAttribute(&quot;order_id&quot;, order_id);</span>
+<span class="nc" id="L55">                request.setAttribute(&quot;product_id&quot;, product_id);</span>
+<span class="nc" id="L56">                request.setAttribute(&quot;quantity&quot;, quantity);</span>
+<span class="nc" id="L57">                request.setAttribute(&quot;description&quot;, description);</span>
+<span class="nc" id="L58">                request.setAttribute(&quot;purchase_cost&quot;, purchase_cost);</span>
+<span class="nc" id="L59">                request.setAttribute(&quot;total_cost&quot;, total_cost);</span>
+<span class="nc" id="L60">                request.setAttribute(&quot;productsResultList&quot;, dao.getAvailableProductList());</span>
+<span class="nc" id="L61">                request.getRequestDispatcher(&quot;protectedCustomer/orderDisplayPage.jsp&quot;).forward(request, response);</span>
+                //si l'action est &quot;Modifier&quot;, on récupère les paramètres nécessaires à la requête
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            } else if (action.equals(&quot;Modifier&quot;)) {</span>
+<span class="nc" id="L64">                String product_id_to_update = request.getParameter(&quot;product_id_to_update&quot;);</span>
+<span class="nc" id="L65">                String quantity_to_update = request.getParameter(&quot;quantity_to_update&quot;);</span>
+<span class="nc" id="L66">                String order_num_to_update = request.getParameter(&quot;order_id_to_update&quot;);</span>
+<span class="nc" id="L67">                int int_product_id_to_update = Integer.parseInt(product_id_to_update);</span>
+<span class="nc" id="L68">                int int_quantity_to_update = Integer.parseInt(quantity_to_update);</span>
+<span class="nc" id="L69">                int int_order_num_to_update = Integer.parseInt(order_num_to_update);</span>
+                //on exécute la requête
+<span class="nc" id="L71">                dao.updateOrder(int_order_num_to_update, int_product_id_to_update, int_quantity_to_update);</span>
+                //on renvoie sur la servlet customerServlet
+<span class="nc" id="L73">                response.sendRedirect(&quot;customerServlet&quot;);</span>
+
+            }
+
+<span class="nc" id="L77">        } catch (DAOException | ServletException | IOException | NumberFormatException ex) {</span>
+<span class="nc" id="L78">            Logger.getLogger(&quot;updateOrderServlet&quot;).log(Level.SEVERE, &quot;Action en erreur&quot;, ex);</span>
+
+<span class="nc" id="L80">        }</span>
+<span class="nc" id="L81">    }</span>
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L95">        processRequest(request, response);</span>
+<span class="nc" id="L96">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L109">        processRequest(request, response);</span>
+<span class="nc" id="L110">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="nc" id="L119">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
