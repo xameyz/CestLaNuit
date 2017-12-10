@@ -1,0 +1,20 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+WebServ6,servlet,salesByProductCatServlet,119,0,12,0,28,0,11,0,5,0
+WebServ6,servlet,salesByGeoServlet,119,0,12,0,28,0,11,0,5,0
+WebServ6,servlet,deleteOrderServlet,79,0,0,0,24,0,5,0,5,0
+WebServ6,servlet,logServlet,182,0,26,0,46,0,22,0,8,0
+WebServ6,servlet,addOrderServlet,93,0,2,0,27,0,6,0,5,0
+WebServ6,servlet,customerServlet,92,0,2,0,24,0,6,0,5,0
+WebServ6,servlet,updateOrderServlet,141,0,4,0,39,0,7,0,5,0
+WebServ6,servlet,salesByCustomerServlet,119,0,12,0,28,0,11,0,5,0
+WebServ6,model,DataSourceFactory.new Object() {...},12,0,0,0,1,0,1,0,1,0
+WebServ6,model,OrderEntity,70,33,0,0,30,12,20,1,20,1
+WebServ6,model,Revenue,26,0,0,0,12,0,6,0,6,0
+WebServ6,model,DataSourceFactory.DriverType,38,0,0,0,2,0,4,0,4,0
+WebServ6,model,LogException,4,0,0,0,2,0,1,0,1,0
+WebServ6,model,ProductEntity,21,12,0,0,9,5,6,1,6,1
+WebServ6,model,DAO,1128,888,176,98,76,162,128,24,3,12
+WebServ6,model,DataSourceFactory,47,0,2,0,16,0,4,0,3,0
+WebServ6,model,DAOException,0,4,0,0,0,2,0,1,0,1
+WebServ6,filters,ProtectedAdminPageFilter,75,0,10,0,14,0,9,0,4,0
+WebServ6,filters,ProtectedCustomerPagesFilter,75,0,10,0,14,0,9,0,4,0

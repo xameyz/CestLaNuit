@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>customerServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebServ6</a> &gt; <a href="index.source.html" class="el_package">servlet</a> &gt; <span class="el_source">customerServlet.java</span></div><h1>customerServlet.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package servlet;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.DAO;
+import model.DAOException;
+import model.DataSourceFactory;
+import model.LogException;
+
+/**
+ *
+ * @author max
+ */
+<span class="nc" id="L25">public class customerServlet extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            //on importe le DAO
+<span class="nc" id="L40">            DAO dao = new DAO(DataSourceFactory.getDataSource());</span>
+            //on récupère la session en cours si elle existe
+<span class="nc" id="L42">            HttpSession session = request.getSession(false);</span>
+            //on récupère l'attribut userName contenu dans le scope session
+<span class="nc" id="L44">            String customer_id = (String) session.getAttribute(&quot;userName&quot;);</span>
+            //si on n'a pas d'attribut objet, on throw une exception destinée à renvoyer vers logServlet
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (null == customer_id) {</span>
+<span class="nc" id="L47">                throw new LogException(&quot;Vous devez vous authentifier&quot;);</span>
+            }
+            //sinon, on envoie les attributs contenus dans les scope request et session
+<span class="nc" id="L50">            request.setAttribute(&quot;ordersResultList&quot;, dao.getAllOrders(Integer.parseInt(customer_id)));</span>
+<span class="nc" id="L51">            request.setAttribute(&quot;productsResultList&quot;, dao.getAvailableProductList());</span>
+<span class="nc" id="L52">            session.setAttribute(&quot;customer_name&quot;, dao.getCustomerNameById(Integer.parseInt(customer_id)));</span>
+            //on appelle la page orderPage.jsp
+<span class="nc" id="L54">            request.getRequestDispatcher(&quot;protectedCustomer/orderPage.jsp&quot;).forward(request, response);</span>
+
+<span class="nc" id="L56">        } catch (LogException ex) {</span>
+            //si on catch une erreur LogException, on renvoie vers la page logServlet
+<span class="nc" id="L58">            request.setAttribute(&quot;message&quot;, ex.getMessage());</span>
+<span class="nc" id="L59">            response.sendRedirect(&quot;logServlet&quot;);</span>
+
+<span class="nc" id="L61">        } catch (NumberFormatException | DAOException | ServletException | IOException ex) {</span>
+<span class="nc" id="L62">            Logger.getLogger(&quot;customerServlet&quot;).log(Level.SEVERE, &quot;Action en erreur&quot;, ex);</span>
+<span class="nc" id="L63">            request.setAttribute(&quot;message&quot;, ex.getMessage());</span>
+<span class="nc" id="L64">            request.getRequestDispatcher(&quot;customerServlet.jsp&quot;).forward(request, response);</span>
+
+<span class="nc" id="L66">        }</span>
+
+<span class="nc" id="L68">    }</span>
+
+// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L82">        processRequest(request, response);</span>
+<span class="nc" id="L83">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L96">        processRequest(request, response);</span>
+<span class="nc" id="L97">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="nc" id="L106">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

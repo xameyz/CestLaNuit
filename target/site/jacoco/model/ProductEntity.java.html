@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductEntity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebServ6</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">ProductEntity.java</span></div><h1>ProductEntity.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+/**
+ *
+ * @author max
+ */
+public class ProductEntity {
+
+    private int prod_id;
+    private float purchase_cost;
+    private String description;
+
+<span class="fc" id="L18">    public ProductEntity(int prod_id, float purchase_cost, String description) {</span>
+<span class="fc" id="L19">        this.prod_id = prod_id;</span>
+<span class="fc" id="L20">        this.purchase_cost = purchase_cost;</span>
+<span class="fc" id="L21">        this.description = description;</span>
+<span class="fc" id="L22">    }</span>
+
+    public int getProd_id() {
+<span class="nc" id="L25">        return prod_id;</span>
+    }
+
+    public float getPurchase_cost() {
+<span class="nc" id="L29">        return purchase_cost;</span>
+    }
+
+    public String getDescription() {
+<span class="nc" id="L33">        return description;</span>
+    }
+
+    public void setProd_id(int prod_id) {
+<span class="nc" id="L37">        this.prod_id = prod_id;</span>
+<span class="nc" id="L38">    }</span>
+
+    public void setPurchase_cost(float purchase_cost) {
+<span class="nc" id="L41">        this.purchase_cost = purchase_cost;</span>
+<span class="nc" id="L42">    }</span>
+
+    public void setDescription(String description) {
+<span class="nc" id="L45">        this.description = description;</span>
+<span class="nc" id="L46">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

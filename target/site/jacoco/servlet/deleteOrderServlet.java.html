@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>deleteOrderServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebServ6</a> &gt; <a href="index.source.html" class="el_package">servlet</a> &gt; <span class="el_source">deleteOrderServlet.java</span></div><h1>deleteOrderServlet.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package servlet;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.DAO;
+import model.DAOException;
+import model.DataSourceFactory;
+
+/**
+ *
+ * @author max
+ */
+<span class="nc" id="L25">public class deleteOrderServlet extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L38">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
+        try {
+            //on importe le DAO
+<span class="nc" id="L41">            DAO dao = new DAO(DataSourceFactory.getDataSource());</span>
+            //on récupère la session en cours si elle existe
+<span class="nc" id="L43">            HttpSession session = request.getSession(false);</span>
+            //on récupère l'attribut userName contenu dans le scope session
+<span class="nc" id="L45">            String customer_id = (String) session.getAttribute(&quot;userName&quot;);</span>
+            //ainsi que les attributs contenus dans le scope request
+<span class="nc" id="L47">            String order_id = request.getParameter(&quot;order_id&quot;);</span>
+            //on les parse
+<span class="nc" id="L49">            int int_customer_id = Integer.parseInt(customer_id);</span>
+<span class="nc" id="L50">            int int_order_id = Integer.parseInt(order_id);</span>
+            //on exécute la méthode du DAO permettant de supprimer une ligne
+<span class="nc" id="L52">            dao.deleteOrder(int_order_id, int_customer_id);</span>
+            //on renvoie vers la servlet customerServlet
+<span class="nc" id="L54">            response.sendRedirect(&quot;customerServlet&quot;);</span>
+
+<span class="nc" id="L56">        } catch (NumberFormatException | DAOException | IOException ex) {</span>
+<span class="nc" id="L57">            Logger.getLogger(&quot;deleteOrderServlet&quot;).log(Level.SEVERE, &quot;Action en erreur&quot;, ex);</span>
+<span class="nc" id="L58">            String customer_id = request.getParameter(&quot;customer_id&quot;);</span>
+<span class="nc" id="L59">            request.setAttribute(&quot;customer_id&quot;, customer_id);</span>
+<span class="nc" id="L60">            request.setAttribute(&quot;message&quot;, ex.getMessage());</span>
+<span class="nc" id="L61">            RequestDispatcher rd = request.getRequestDispatcher(&quot;customerServlet&quot;);</span>
+<span class="nc" id="L62">            rd.forward(request, response);</span>
+
+<span class="nc" id="L64">        }</span>
+<span class="nc" id="L65">    }</span>
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L79">        processRequest(request, response);</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L93">        processRequest(request, response);</span>
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="nc" id="L103">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
